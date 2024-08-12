@@ -1,0 +1,68 @@
+# Maven target directory
+/target/
+
+# IntelliJ IDEA files
+.idea/
+/*.iml
+*.iws
+
+# Eclipse files
+.project
+.classpath
+/.settings/
+
+# NetBeans files
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/nbactions.xml
+/nb-configuration.xml
+
+# VS Code files
+.vscode/
+
+# MacOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~ 
+*.bak
+*.orig
+
+# Other build system files
+/.gradle/
+/build/
+/out/
+!**/src/main/**/build/
+/mvnw
+/mvnw.cmd
+
+# Java-specific
+*.class
+
+# Environment files
+.env
+.env.* 
+
+# Miscellaneous
+*.log
+*.lock
+*.key
+*.pem
+*.crt
+*.csr
+*.p12
+*.db
