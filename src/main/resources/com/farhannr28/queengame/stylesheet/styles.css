@@ -1,0 +1,64 @@
+/* Color Variables (All Caps) */
+.BACKGROUND {
+    -fx-background-color: #101010;
+}
+
+.PRIMARY_TEXT {
+    -fx-text-fill: #EFEFEF;
+}
+
+.Item-Container {
+    -fx-border-color: #262626;
+    -fx-border-width: 10;
+    -fx-border-radius: 30;
+    -fx-background-color: #101010;
+
+    /* -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.50), 4, 0.2, 2, 4),
+                dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0.8, 6, 12);
+     */
+}
+
+.Title {
+    -fx-effect: dropshadow(gaussian,  #EFEFEF, 5, 0.1, 0, 0);
+}
+
+.Grid-Pane {
+    -fx-effect: dropshadow(gaussian,  #0c1c36, 40, 0.3, 0, 0);
+}
+
+.Grid-Border {
+    -fx-effect: innershadow(gaussian, #122f60, 30, 0.4, 0, 0);
+}
+
+.Primary-Button {
+    -fx-background-color: #101010;
+    -fx-border-color: #1e4fa0;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-background-radius:  12;
+    -fx-effect: dropshadow(gaussian, #1e4fa0, 20, 0.1, 0, 0);
+}
+
+.Primary-Button:hover {
+    -fx-effect: dropshadow(gaussian, #1e4fa0, 32, 0.1, 0, 0);
+}
+
+.Secondary-Button {
+    -fx-background-color: #262626;
+    -fx-background-radius:  10;
+    -fx-effect: null;
+}
+
+.Secondary-Button:hover {
+    -fx-effect: dropshadow(gaussian, #EFEFEF, 10, 0.1, 0, 0);
+}
+
+.Grid-Cells {
+    -fx-arc-width: 15;
+    -fx-arc-height: 15;
+    -fx-smooth: true;
+    -fx-stroke-type: INSIDE;
+    -fx-stroke-line-cap: ROUND;
+    -fx-stroke-line-join: ROUND;
+    -fx-stroke: #101010;
+}

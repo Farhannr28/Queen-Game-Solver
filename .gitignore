@@ -66,3 +66,6 @@ Desktop.ini
 *.csr
 *.p12
 *.db
+
+# Testcases
+testcase/
