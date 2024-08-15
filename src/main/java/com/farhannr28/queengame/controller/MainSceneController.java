@@ -39,6 +39,7 @@ public class MainSceneController implements Initializable {
     private int numOfColors;
     private ArrayList<Color> colors;
     private ArrayList<ArrayList<Integer>> regions;
+    private String fileName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,21 +50,21 @@ public class MainSceneController implements Initializable {
     }
 
     public void handleSelectedFile(javafx.scene.input.MouseEvent mouseEvent){
-        String selectedFile = fc.selectFile();
-        this.row = fc.getRow();
-        this.col = fc.getCol();
-        this.numOfColors = fc.getNumOfColors();
-        this.regions = fc.getRegions();
-        this.searchButton.setDisable(false);
-        this.modifyButton.setDisable(false);
-        this.selectedFileLabel.setText(selectedFile);
-        this.colors = gc.generateRandomColors(numOfColors);
-
-        System.out.println(row + " " + col);
-        System.out.println(numOfColors);
-        System.out.println(regions);
-        System.out.println(colors);
-
-        gc.renderGrid(this.regions, this.colors);
+        if (fc.selectFile()) {
+            this.row = fc.getRow();
+            this.col = fc.getCol();
+            this.numOfColors = fc.getNumOfColors();
+            this.regions = fc.getRegions();
+            this.selectedFileLabel.setText(fc.getFileName());
+            this.selectedFileLabel.setTextFill(Color.rgb(239, 239, 239));
+            this.searchButton.setDisable(false);
+            this.modifyButton.setDisable(false);
+            this.colors = gc.generateRandomColors(numOfColors);
+            gc.renderGrid(this.regions, this.colors);
+        } else {
+            this.selectedFileLabel.setText("Input Invalid");
+            this.selectedFileLabel.setTextFill(Color.rgb(96,18,18));
+        }
+        this.selectedFileLabel.setLayoutX(135 - selectedFileLabel.getWidth()/2);
     }
 }

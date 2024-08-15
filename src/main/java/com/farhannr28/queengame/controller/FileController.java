@@ -1,5 +1,6 @@
 package com.farhannr28.queengame.controller;
 
+import com.farhannr28.queengame.services.RegionProcessor;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
@@ -15,10 +16,12 @@ public class FileController {
     private int row;
     private int col;
     private int numOfColors;
+    private String fileName;
     private ArrayList<ArrayList<Integer>> regions;
 
     private void readFile(File file) {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            this.fileName = file.getName();
             String line;
             line = br.readLine();
             String[] splitted = line.split(" ");
@@ -43,14 +46,15 @@ public class FileController {
         }
     }
 
-    public String selectFile(){
+    public boolean selectFile(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             readFile(selectedFile);
         }
-        return selectedFile.getName();
+        RegionProcessor.process(this.regions, this.numOfColors);
+        return RegionProcessor.validateRegion(this.numOfColors);
     }
 
     public int getRow() {
@@ -63,6 +67,10 @@ public class FileController {
 
     public int getNumOfColors() {
         return this.numOfColors;
+    }
+
+    public String getFileName() {
+        return this.fileName;
     }
 
     public ArrayList<ArrayList<Integer>> getRegions() {
