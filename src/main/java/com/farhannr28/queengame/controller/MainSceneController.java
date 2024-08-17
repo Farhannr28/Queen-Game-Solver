@@ -1,12 +1,20 @@
 package com.farhannr28.queengame.controller;
 
+import com.farhannr28.queengame.models.GridInput;
+import com.farhannr28.queengame.services.Backtrack;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -19,7 +27,7 @@ public class MainSceneController implements Initializable {
     @FXML
     private Button modifyButton;
     @FXML
-    private Button searchButton;
+    private Button solveButton;
     @FXML
     private GridPane mainGrid;
     @FXML
@@ -28,43 +36,78 @@ public class MainSceneController implements Initializable {
     private Pane gridBorder;
     @FXML
     private Label selectedFileLabel;
+    @FXML
+    private ChoiceBox<String> pieceChoice;
+    @FXML
+    private Circle slider;
+
+    private TranslateTransition translateTransition;
 
     /* CONTROLLER ATTRIBUTES */
     private GridController gc;
     private final FileController fc = new FileController();
 
     /* INPUT ATTRIBUTES */
-    private int row;
-    private int col;
-    private int numOfColors;
+    private GridInput gi;
     private ArrayList<Color> colors;
-    private ArrayList<ArrayList<Integer>> regions;
-    private String fileName;
+    private boolean isBacktrackAlgorithm;
+    private String piece;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        translateTransition = new TranslateTransition(Duration.millis(200), slider);
+        pieceChoice.getItems().addAll("GAME QUEEN", "STANDARD QUEEN", "ROOK", "BISHOP", "KNIGHT");
+        pieceChoice.setValue("GAME QUEEN");
+        isBacktrackAlgorithm = true;
         modifyItemContainer.setVisible(false);
-        searchButton.setDisable(true);
+        solveButton.setDisable(true);
         modifyButton.setDisable(true);
         gc = new GridController(mainGrid, gridPane, gridBorder);
     }
 
     public void handleSelectedFile(javafx.scene.input.MouseEvent mouseEvent){
         if (fc.selectFile()) {
-            this.row = fc.getRow();
-            this.col = fc.getCol();
-            this.numOfColors = fc.getNumOfColors();
-            this.regions = fc.getRegions();
+            gi = new GridInput(fc.getRow(), fc.getCol(), fc.getNumOfColors(),fc.getRegions());
             this.selectedFileLabel.setText(fc.getFileName());
-            this.selectedFileLabel.setTextFill(Color.rgb(239, 239, 239));
-            this.searchButton.setDisable(false);
+            this.solveButton.setDisable(false);
             this.modifyButton.setDisable(false);
-            this.colors = gc.generateRandomColors(numOfColors);
-            gc.renderGrid(this.regions, this.colors);
+            this.colors = gc.generateRandomColors(gi.getNumOfColors());
+            gc.renderGrid(gi.getRegions(), this.colors);
         } else {
+            solveButton.setDisable(true);
+            modifyButton.setDisable(true);
             this.selectedFileLabel.setText("Input Invalid");
-            this.selectedFileLabel.setTextFill(Color.rgb(96,18,18));
         }
         this.selectedFileLabel.setLayoutX(135 - selectedFileLabel.getWidth()/2);
+    }
+
+    public void handleSolveClicked(javafx.scene.input.MouseEvent mouseEvent){
+        solveButton.setCursor(Cursor.WAIT);
+        if (pieceChoice.getValue().equals("GAME QUEEN")) {
+            piece = "NEIGHBORQUEEN";
+        } else if (pieceChoice.getValue().equals("STANDARD QUEEN")) {
+            piece = "QUEEN";
+        } else {
+            piece = pieceChoice.getValue();
+        }
+        String searchMode;
+        if (isBacktrackAlgorithm){
+            Backtrack b = new Backtrack(piece, gi);
+            gc.displaySolution(piece, b.getSolution());
+        } else {
+            // TODO: Genetic Algorithm
+        }
+
+        solveButton.setCursor(Cursor.DEFAULT);
+    }
+
+    public void handleToggleClicked(javafx.scene.input.MouseEvent mouseEvent) {
+        if (isBacktrackAlgorithm) {
+            translateTransition.setToX(40);
+        } else {
+            translateTransition.setToX(0);
+        }
+        isBacktrackAlgorithm = !isBacktrackAlgorithm;
+        translateTransition.play();
     }
 }

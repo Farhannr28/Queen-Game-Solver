@@ -3,8 +3,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -51,26 +51,37 @@
                </BorderPane.margin>
                <children>
                   <Pane prefHeight="610.0" prefWidth="30.0" style="-fx-background-color: #122f60; -fx-background-radius: 30 0 0 30;" />
-                  <Pane layoutX="30.0" prefHeight="280.0" prefWidth="250.0">
+                  <Pane layoutX="30.0" layoutY="22.0" prefHeight="280.0" prefWidth="250.0">
                      <children>
-                        <Label layoutX="2.0" layoutY="214.0" prefHeight="45.0" prefWidth="82.0" text="DFS Backtrack" textAlignment="CENTER" textFill="#efefef" wrapText="true">
+                        <Label layoutX="11.0" layoutY="211.0" prefHeight="45.0" prefWidth="61.0" text="Backtrack" textAlignment="CENTER" textFill="#efefef" wrapText="true">
                            <font>
                               <Font name="Segoe UI Semibold" size="14.0" />
                            </font>
                         </Label>
-                        <ToggleButton layoutX="88.0" layoutY="216.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="75.0" style="-fx-background-color: transparent;" />
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#262626" height="30.0" layoutX="83.0" layoutY="218.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="70.0" />
-                        <Circle fill="#efefef" layoutX="98.0" layoutY="233.0" radius="11.0" stroke="#efefef" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label layoutX="64.0" layoutY="166.0" text="ALGORITHM" textFill="#efefef">
+                        <Circle fx:id="slider" fill="#efefef" layoutX="98.0" layoutY="233.0" radius="11.0" stroke="#efefef" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Button fx:id="algorithmToggle" layoutX="84.0" layoutY="218.0" mnemonicParsing="false" onMouseClicked="#handleToggleClicked" prefHeight="30.0" prefWidth="68.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
+                        <Label layoutX="61.0" layoutY="158.0" text="ALGORITHM" textFill="#efefef">
                            <font>
-                              <Font name="Segoe UI Semibold" size="20.0" />
+                              <Font name="Segoe UI Semibold" size="22.0" />
                            </font>
                         </Label>
+                        <Label layoutX="164.0" layoutY="211.0" prefHeight="45.0" prefWidth="55.0" text="Genetic" textAlignment="CENTER" textFill="#efefef" wrapText="true">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="90.0" layoutY="21.0" text="PIECE" textFill="#efefef">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="22.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="pieceChoice" layoutX="30.0" layoutY="79.0" prefHeight="36.0" prefWidth="176.0" style="-fx-background-color: #262626; -fx-border-color: #FFFFFF; -fx-border-width: 0 0 3 0; -fx-border-radius: 7; -fx-background-radius: 7;" />
                      </children>
                   </Pane>
                   <Pane layoutX="30.0" layoutY="280.0" prefHeight="330.0" prefWidth="250.0">
                      <children>
-                        <Button fx:id="searchButton" layoutX="60.0" layoutY="222.0" mnemonicParsing="false" text="SEARCH" textFill="#1e4fa0">
+                        <Button fx:id="solveButton" layoutX="57.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#handleSolveClicked" prefHeight="56.0" prefWidth="137.0" text="SOLVE" textFill="#1e4fa0">
                            <font>
                               <Font name="Segoe UI Semibold" size="25.0" />
                            </font>
@@ -93,7 +104,7 @@
                               <Font name="Segoe UI Semibold" size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="selectedFileLabel" layoutX="47.0" layoutY="59.0" text="No File Selected" textFill="#efefef">
+                        <Label fx:id="selectedFileLabel" layoutX="47.0" layoutY="59.0" text="No File Selected" textFill="#1e4fa0">
                            <font>
                               <Font name="Segoe UI Semibold" size="20.0" />
                            </font>

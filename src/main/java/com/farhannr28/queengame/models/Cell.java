@@ -46,8 +46,8 @@ public class Cell {
         return adjacentCells;
     }
 
-//    /* DEBUGGING PURPOSES */
-//    public void printCell(){
-//        System.out.println(row+","+col);
-//    }
+    /* DEBUGGING PURPOSES */
+    public void printCell(){
+        System.out.println(row+","+col);
+    }
 }

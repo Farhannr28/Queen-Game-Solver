@@ -62,3 +62,28 @@
     -fx-stroke-line-join: ROUND;
     -fx-stroke: #101010;
 }
+
+.choice-box .arrow {
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z";
+    -fx-background-color: #EFEFEF;
+    -fx-padding: 5;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.choice-box .menu-item {
+    -fx-background-color: #262626;
+    -fx-opacity: 0.8;
+}
+
+.choice-box .menu-item:hover {
+    -fx-background-color: #122f60;
+}
+
+
+.choice-box .label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-text-fill: #EFEFEF;
+}

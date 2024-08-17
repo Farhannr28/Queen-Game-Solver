@@ -1,5 +1,10 @@
 package com.farhannr28.queengame.controller;
 
+import com.farhannr28.queengame.models.Cell;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -14,6 +19,7 @@ public class GridController {
     private GridPane mainGrid;
     private Pane gridPane;
     private Pane gridBorder;
+    private int cellSize;
 
     public GridController(GridPane _mainGrid, Pane _gridPane, Pane _gridBorder){
         this.mainGrid = _mainGrid;
@@ -55,9 +61,11 @@ public class GridController {
     public void renderGrid(ArrayList<ArrayList<Integer>> grid, ArrayList<Color> colors){
         int newNumRows = grid.size();
         int newNumCols = grid.get(0).size();
-        int cellSize = Math.min(600 / (Math.max(newNumRows, newNumCols)), 150);
+        cellSize = Math.min(600 / (Math.max(newNumRows, newNumCols)), 150);
         int oldNumRows = mainGrid.getRowCount();
         int oldNumCols = mainGrid.getColumnCount();
+
+        cleanSolution();
 
         if (newNumRows < oldNumRows){
             for (int row = oldNumRows-1; row >= newNumRows; row--) {
@@ -124,5 +132,24 @@ public class GridController {
 
         mainGrid.setLayoutX(5);
         mainGrid.setLayoutY(5);
+    }
+
+    public void displaySolution(String piece, ArrayList<Cell> solution){
+        cleanSolution();
+        Image image = new Image("com/farhannr28/queengame/img/" + piece + ".png");
+        for (Cell c : solution){
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(0.6 * cellSize);
+            imageView.setFitHeight(0.6 * cellSize);
+            mainGrid.add(imageView, c.getCol(), c.getRow());
+            GridPane.setHalignment(imageView, HPos.CENTER); // Horizontal alignment
+            GridPane.setValignment(imageView, VPos.CENTER);
+        }
+    }
+
+    private void cleanSolution(){
+        javafx.collections.transformation.FilteredList<javafx.scene.Node> nodesToRemove = mainGrid.getChildren().filtered(node -> node instanceof ImageView);
+        System.out.println(nodesToRemove);
+        mainGrid.getChildren().removeAll(nodesToRemove);
     }
 }
