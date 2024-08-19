@@ -66,9 +66,9 @@
                               <Font name="Segoe UI Semibold" size="22.0" />
                            </font>
                         </Label>
-                        <Label layoutX="164.0" layoutY="211.0" prefHeight="45.0" prefWidth="55.0" text="Genetic" textAlignment="CENTER" textFill="#efefef" wrapText="true">
+                        <Label layoutX="153.0" layoutY="207.0" prefHeight="54.0" prefWidth="79.0" text="Genetic (Unavailable)" textAlignment="CENTER" textFill="#efefef" wrapText="true">
                            <font>
-                              <Font name="Segoe UI Semibold" size="16.0" />
+                              <Font name="Segoe UI Semibold" size="12.0" />
                            </font>
                         </Label>
                         <Label layoutX="90.0" layoutY="21.0" text="PIECE" textFill="#efefef">
@@ -129,6 +129,11 @@
                      <children>
                         <Pane fx:id="gridBorder" layoutX="20.0" layoutY="20.0" maxHeight="610.0" maxWidth="610.0" minHeight="160.0" minWidth="160.0" style="-fx-border-radius: 15; -fx-border-width: 5; -fx-border-color: #122f60; -fx-background-color: #101010; -fx-background-radius: 20;" styleClass="Grid-Border">
                            <children>
+                              <Label fx:id="alertLabel" layoutX="105.0" layoutY="263.0" text="REGION INVALID" textFill="#efefef">
+                                 <font>
+                                    <Font name="Segoe UI Semibold" size="50.0" />
+                                 </font>
+                              </Label>
                               <GridPane fx:id="mainGrid" layoutX="5.0" layoutY="5.0" maxHeight="600.0" maxWidth="600.0" minHeight="150.0" minWidth="150.0" prefHeight="600.0" prefWidth="600.0" style="-fx-border-radius: 15;">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="600.0" />
@@ -151,7 +156,7 @@
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
          <children>
-            <Pane fx:id="modifyItemContainer" prefHeight="523.0" prefWidth="270.0" styleClass="Item-Container">
+            <Pane fx:id="modifyItemContainer" prefHeight="523.0" prefWidth="270.0" style="-fx-opacity: 1;" styleClass="Item-Container">
                <children>
                   <Pane layoutX="240.0" prefHeight="523.0" prefWidth="30.0" style="-fx-background-color: #122f60; -fx-background-radius: 0 30 30 0;" />
                   <Label layoutX="92.0" layoutY="40.0" text="ROWS :" textFill="#efefef">
@@ -159,17 +164,17 @@
                         <Font name="Segoe UI Semibold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="119.0" layoutY="80.0" text="0" textFill="#efefef">
+                  <Label fx:id="rowLabel" layoutX="119.0" layoutY="80.0" text="0" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Semibold" size="25.0" />
                      </font>
                   </Label>
-                  <Button layoutX="158.0" layoutY="83.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&gt;" textFill="#efefef">
+                  <Button fx:id="incrementRow" layoutX="158.0" layoutY="83.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleIncrementRow" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&gt;" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button layoutX="52.0" layoutY="83.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&lt;" textFill="#efefef">
+                  <Button fx:id="decrementRow" layoutX="52.0" layoutY="83.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleDecrementRow" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&lt;" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
@@ -179,17 +184,17 @@
                         <Font name="Segoe UI Semibold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="119.0" layoutY="190.0" text="0" textFill="#efefef">
+                  <Label fx:id="columnLabel" layoutX="119.0" layoutY="190.0" text="0" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Semibold" size="25.0" />
                      </font>
                   </Label>
-                  <Button layoutX="158.0" layoutY="193.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&gt;" textFill="#efefef">
+                  <Button fx:id="incrementColumn" layoutX="158.0" layoutY="193.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleIncrementColumn" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&gt;" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button layoutX="52.0" layoutY="193.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&lt;" textFill="#efefef">
+                  <Button fx:id="decrementColumn" layoutX="52.0" layoutY="193.0" maxHeight="30.0" maxWidth="40.0" minHeight="30.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleDecrementColumn" prefHeight="30.0" prefWidth="40.0" styleClass="Secondary-Button" text="&lt;" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
@@ -199,7 +204,7 @@
                         <Font name="Segoe UI Semibold" size="20.0" />
                      </font>
                   </Label>
-                  <GridPane layoutX="25.0" layoutY="300.0" maxHeight="124.0" maxWidth="204.0" prefHeight="124.0" prefWidth="204.0" style="-fx-background-color: 101010;">
+                  <GridPane fx:id="colorSelector" layoutX="25.0" layoutY="300.0" maxHeight="124.0" maxWidth="204.0" prefHeight="124.0" prefWidth="204.0" style="-fx-background-color: 101010;">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
@@ -212,12 +217,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#78ce9b" height="40.0" stroke="#efefef" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="3.0" width="40.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#493399" height="40.0" layoutX="12.0" layoutY="12.0" stroke="#101010" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="2.0" width="40.0" GridPane.columnIndex="1" />
-                     </children>
                   </GridPane>
-                  <Button layoutX="54.0" layoutY="453.0" maxHeight="40.0" maxWidth="145.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="145.0" styleClass="Secondary-Button" text="Add New Colors" textFill="#efefef">
+                  <Button fx:id="newColorButton" layoutX="54.0" layoutY="453.0" maxHeight="40.0" maxWidth="145.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleNewColor" prefHeight="40.0" prefWidth="145.0" styleClass="Secondary-Button" text="Add New Colors" textFill="#efefef">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
@@ -228,7 +229,7 @@
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
          <children>
-            <Button fx:id="modifyButton" alignment="CENTER" contentDisplay="CENTER" layoutX="65.0" layoutY="40.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="170.0" text="MODIFY" textFill="#1e4fa0">
+            <Button fx:id="modifyButton" alignment="CENTER" contentDisplay="CENTER" layoutX="65.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#handleModifyClicked" prefHeight="70.0" prefWidth="170.0" text="MODIFY" textFill="#1e4fa0">
                <font>
                   <Font name="Segoe UI Semibold" size="30.0" />
                </font>

@@ -28,14 +28,14 @@ public class FileController {
             row = Integer.parseInt(splitted[0]);
             col = Integer.parseInt(splitted[1]);
             line = br.readLine();
-            numOfColors = Integer.parseInt(line);
+            numOfColors = Integer.parseInt(line) + 1;
             regions = new ArrayList<>();
             Map<Character, Integer> colorMap = new HashMap<>();
             while ((line = br.readLine()) != null) {
                 ArrayList<Integer> intList = new ArrayList<>();
                 for (char c : line.toCharArray()) {
                     if (c != ' ') {
-                        colorMap.computeIfAbsent(c, k -> colorMap.size());
+                        colorMap.computeIfAbsent(c, k -> colorMap.size()+1);
                         intList.add(colorMap.get(c));
                     }
                 }

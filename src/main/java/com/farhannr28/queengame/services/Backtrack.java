@@ -8,35 +8,34 @@ import java.util.Collections;
 
 public class Backtrack {
 
+    private boolean solutionExist;
     private ArrayList<Cell> solution;
     private PieceValidator pv;
 
     public Backtrack(String piece, GridInput gi) {
+
         pv = new PieceValidator(piece, gi.getRow(), gi.getCol(), gi.getNumOfColors());
         solution = new ArrayList<>();
+        solutionExist = true;
 
         if (piece.equals("BISHOP")){
             if (gi.getRow() + gi.getCol() - 1 >= gi.getNumOfColors()){
                 backtrackDiagonalRegion(gi);
             } else {
-                // TODO: Report Impossible
+                solutionExist = false;
             }
         } else if (piece.equals("KNIGHT")){
             backtrackKnight(gi);
         } else {
-            if (gi.getRow() <= gi.getCol()){
-                if (gi.getNumOfColors() < gi.getRow()){
-                    backtrackRegion(gi, piece);
-                } else {
-                    backtrackRow(gi, piece);
-                }
+            if (gi.getRow() < gi.getNumOfColors() || gi.getCol() < gi.getNumOfColors()){
+                solutionExist = false;
             } else {
-                if (gi.getNumOfColors() < gi.getCol()){
-                    backtrackRegion(gi, piece);
-                } else {
-                    backtrackColumn(gi, piece);
-                }
+                backtrackRegion(gi, piece);
             }
+        }
+
+        if (solution.isEmpty() || solution.size() != gi.getNumOfColors()-1){
+            solutionExist = false;
         }
     }
 
@@ -47,99 +46,103 @@ public class Backtrack {
         }
     }
 
+    public boolean getSolutionExist(){
+        return solutionExist;
+    }
+
     public ArrayList<Cell> getSolution() {
         return solution;
     }
 
-    private void backtrackRow(GridInput gi, String piece) {
-        ArrayList<Integer> ans = new ArrayList<>(Collections.nCopies(gi.getRow(), 0));
-        int row = 0;
-        int col = -1;
-        boolean found = false;
-        while (row != -1){
-            col++;
-            while (col < gi.getCol() && !found){
-                if (pv.validateLinear(col, true) && pv.validateEmptyRegion(gi.getRegions().get(row).get(col)) && pv.validateNonLinear(row, col)){
-                    pv.setNeighbor(col);
-                    pv.setVertical(col, true);
-                    pv.setFilledRegions(gi.getRegions().get(row).get(col), true);
-                    if (piece.equals("QUEEN")){
-                        pv.setDiagonal(row, col, true);
-                    }
-                    ans.set(row,col);
-                    if (row == gi.getRow()-1){
-                        found = true;
-                        for (int i=0; i<ans.size(); i++){
-                            solution.add(new Cell(i, ans.get(i)));
-                        }
-                    } else {
-                        row++;
-                        col = 0;
-                    }
-                } else {
-                    col++;
-                }
-            }
-            row--;
-            if (row > -1){
-                col = ans.get(row);
-                pv.setVertical(col, false);
-                pv.setFilledRegions(gi.getRegions().get(row).get(col) ,false);
-                pv.setNeighbor(col);
-                if (piece.equals("QUEEN")){
-                    pv.setDiagonal(row, col, false);
-                }
-            }
-        }
-    }
-
-    private void backtrackColumn(GridInput gi, String piece) {
-        ArrayList<Integer> ans = new ArrayList<>(Collections.nCopies(gi.getCol(), 0));
-        int col = 0;
-        int row = -1;
-        boolean found = false;
-        while (col != -1){
-            row++;
-            while (row < gi.getRow() && !found){
-                if (pv.validateLinear(row, false) && pv.validateEmptyRegion(gi.getRegions().get(row).get(col)) && pv.validateNonLinear(row, col)){
-                    pv.setNeighbor(row);
-                    pv.setHorizontal(row, true);
-                    pv.setFilledRegions(gi.getRegions().get(row).get(col), true);
-                    if (piece.equals("QUEEN")){
-                        pv.setDiagonal(row, col, true);
-                    }
-                    ans.set(col,row);
-                    if (col == gi.getCol()-1){
-                        found = true;
-                        for (int i=0; i<ans.size(); i++){
-                            solution.add(new Cell(ans.get(i), i));
-                        }
-                    } else {
-                        col++;
-                        row = 0;
-                    }
-                } else {
-                    row++;
-                }
-            }
-            col--;
-            if (col > -1){
-                row = ans.get(col);
-                pv.setHorizontal(row, false);
-                pv.setFilledRegions(gi.getRegions().get(row).get(col) ,false);
-                pv.setNeighbor(row);
-                if (piece.equals("QUEEN")){
-                    pv.setDiagonal(row, col, false);
-                }
-            }
-        }
-    }
+//    private void backtrackRow(GridInput gi, String piece) {
+//        ArrayList<Integer> ans = new ArrayList<>(Collections.nCopies(gi.getRow(), 0));
+//        int row = 0;
+//        int col = -1;
+//        boolean found = false;
+//        while (row != -1){
+//            col++;
+//            while (col < gi.getCol() && !found){
+//                if (pv.validateLinear(col, true) && pv.validateEmptyRegion(gi.getRegions().get(row).get(col)) && pv.validateNonLinear(row, col)){
+//                    pv.setNeighbor(col);
+//                    pv.setVertical(col, true);
+//                    pv.setFilledRegions(gi.getRegions().get(row).get(col), true);
+//                    if (piece.equals("QUEEN")){
+//                        pv.setDiagonal(row, col, true);
+//                    }
+//                    ans.set(row,col);
+//                    if (row == gi.getRow()-1){
+//                        found = true;
+//                        for (int i=0; i<ans.size(); i++){
+//                            solution.add(new Cell(i, ans.get(i)));
+//                        }
+//                    } else {
+//                        row++;
+//                        col = 0;
+//                    }
+//                } else {
+//                    col++;
+//                }
+//            }
+//            row--;
+//            if (row > -1){
+//                col = ans.get(row);
+//                pv.setVertical(col, false);
+//                pv.setFilledRegions(gi.getRegions().get(row).get(col) ,false);
+//                pv.setNeighbor(col);
+//                if (piece.equals("QUEEN")){
+//                    pv.setDiagonal(row, col, false);
+//                }
+//            }
+//        }
+//    }
+//
+//    private void backtrackColumn(GridInput gi, String piece) {
+//        ArrayList<Integer> ans = new ArrayList<>(Collections.nCopies(gi.getCol(), 0));
+//        int col = 0;
+//        int row = -1;
+//        boolean found = false;
+//        while (col != -1){
+//            row++;
+//            while (row < gi.getRow() && !found){
+//                if (pv.validateLinear(row, false) && pv.validateEmptyRegion(gi.getRegions().get(row).get(col)) && pv.validateNonLinear(row, col)){
+//                    pv.setNeighbor(row);
+//                    pv.setHorizontal(row, true);
+//                    pv.setFilledRegions(gi.getRegions().get(row).get(col), true);
+//                    if (piece.equals("QUEEN")){
+//                        pv.setDiagonal(row, col, true);
+//                    }
+//                    ans.set(col,row);
+//                    if (col == gi.getCol()-1){
+//                        found = true;
+//                        for (int i=0; i<ans.size(); i++){
+//                            solution.add(new Cell(ans.get(i), i));
+//                        }
+//                    } else {
+//                        col++;
+//                        row = 0;
+//                    }
+//                } else {
+//                    row++;
+//                }
+//            }
+//            col--;
+//            if (col > -1){
+//                row = ans.get(col);
+//                pv.setHorizontal(row, false);
+//                pv.setFilledRegions(gi.getRegions().get(row).get(col) ,false);
+//                pv.setNeighbor(row);
+//                if (piece.equals("QUEEN")){
+//                    pv.setDiagonal(row, col, false);
+//                }
+//            }
+//        }
+//    }
 
     private void backtrackRegion(GridInput gi, String piece) {
         ArrayList<Integer> regionIndexes = new ArrayList<>(Collections.nCopies(gi.getNumOfColors(), 0));
         int row,col;
         Cell c;
-        int region = 0;
+        int region = 1;
         int index = -1;
         boolean found = false;
         while (region != -1){
@@ -158,7 +161,7 @@ public class Backtrack {
                     regionIndexes.set(region,index);
                     if (region == gi.getNumOfColors()-1){
                         found = true;
-                        for (int i=0; i<regionIndexes.size(); i++){
+                        for (int i=1; i<regionIndexes.size(); i++){
                             c = RegionProcessor.getRegionPaths().get(i).get(regionIndexes.get(i));
                             solution.add(c);
                         }
@@ -171,7 +174,7 @@ public class Backtrack {
                 }
             }
             region--;
-            if (region > -1){
+            if (region > 0){
                 index = regionIndexes.get(region);
                 c = RegionProcessor.getRegionPaths().get(region).get(index);
                 row = c.getRow();
@@ -190,7 +193,7 @@ public class Backtrack {
         ArrayList<Integer> regionIndexes = new ArrayList<>(Collections.nCopies(gi.getNumOfColors(), 0));
         int row,col;
         Cell c;
-        int region = 0;
+        int region = 1;
         int index = -1;
         boolean found = false;
         while (region != -1){
@@ -204,7 +207,7 @@ public class Backtrack {
                     regionIndexes.set(region,index);
                     if (region == gi.getNumOfColors()-1){
                         found = true;
-                        for (int i=0; i<regionIndexes.size(); i++){
+                        for (int i=1; i<regionIndexes.size(); i++){
                             c = RegionProcessor.getRegionPaths().get(i).get(regionIndexes.get(i));
                             solution.add(c);
                         }
@@ -217,7 +220,7 @@ public class Backtrack {
                 }
             }
             region--;
-            if (region > -1){
+            if (region > 0){
                 index = regionIndexes.get(region);
                 c = RegionProcessor.getRegionPaths().get(region).get(index);
                 row = c.getRow();
@@ -231,7 +234,7 @@ public class Backtrack {
         ArrayList<Integer> regionIndexes = new ArrayList<>(Collections.nCopies(gi.getNumOfColors(), 0));
         int row,col;
         Cell c;
-        int region = 0;
+        int region = 1;
         int index = -1;
         boolean found = false;
         while (region != -1){
@@ -245,7 +248,7 @@ public class Backtrack {
                     regionIndexes.set(region,index);
                     if (region == gi.getNumOfColors()-1){
                         found = true;
-                        for (int i=0; i<regionIndexes.size(); i++){
+                        for (int i=1; i<regionIndexes.size(); i++){
                             c = RegionProcessor.getRegionPaths().get(i).get(regionIndexes.get(i));
                             solution.add(c);
                         }
@@ -258,7 +261,7 @@ public class Backtrack {
                 }
             }
             region--;
-            if (region > -1){
+            if (region > 0){
                 index = regionIndexes.get(region);
                 c = RegionProcessor.getRegionPaths().get(region).get(index);
                 row = c.getRow();

@@ -1,6 +1,8 @@
 package com.farhannr28.queengame.controller;
 
 import com.farhannr28.queengame.models.Cell;
+import com.farhannr28.queengame.models.GridInput;
+import com.farhannr28.queengame.utils.Util;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.image.Image;
@@ -20,13 +22,14 @@ public class GridController {
     private Pane gridPane;
     private Pane gridBorder;
     private int cellSize;
+    private static ArrayList<Color> colors;
 
     public GridController(GridPane _mainGrid, Pane _gridPane, Pane _gridBorder){
         this.mainGrid = _mainGrid;
         this.gridPane = _gridPane;
         this.gridBorder = _gridBorder;
         mainGrid.getChildren().remove(0);
-        mainGrid.add(new Rectangle(40, 40, Color.rgb(16,16,16)), 0, 0);
+        mainGrid.add(createGridCell(40, 0, 0), 0, 0);
 
         /* TESTING PURPOSES */
 //        final int WIDTH = 10;
@@ -46,19 +49,28 @@ public class GridController {
 //        renderGrid(grid, colors);
     }
 
-    public Color randomSingleColor(){
+    public static ArrayList<Color> getColors(){
+        return colors;
+    }
+
+    public static Color randomSingleColor(){
         return Color.hsb(randomInt(0, 360), (double) randomInt(42, 98) / 100, (double) randomInt(40, 90) / 100);
     }
 
-    public ArrayList<Color> generateRandomColors(int numOfColors) {
+    public void generateRandomColors(int numOfColors) {
         ArrayList<Color> ret = new ArrayList<>();
-        for (int i=0; i<numOfColors; i++){
+        ret.add(Color.rgb(16, 16, 16));
+        for (int i=1; i<numOfColors; i++){
             ret.add(randomSingleColor());
         }
-        return ret;
+        colors = ret;
     }
 
-    public void renderGrid(ArrayList<ArrayList<Integer>> grid, ArrayList<Color> colors){
+    public static void addColor(){
+        colors.add(randomSingleColor());
+    }
+
+    public void renderGrid(ArrayList<ArrayList<Integer>> grid){
         int newNumRows = grid.size();
         int newNumCols = grid.get(0).size();
         cellSize = Math.min(600 / (Math.max(newNumRows, newNumCols)), 150);
@@ -70,14 +82,14 @@ public class GridController {
         if (newNumRows < oldNumRows){
             for (int row = oldNumRows-1; row >= newNumRows; row--) {
                 int finalRow = row;
-                mainGrid.getChildren().removeIf(node -> GridPane.getRowIndex(node) == finalRow);
                 mainGrid.getRowConstraints().remove(finalRow);
+                mainGrid.getChildren().removeIf(node -> GridPane.getRowIndex(node) == finalRow);
             }
         } else {
             for (int row = oldNumRows; row < newNumRows; row++) {
                 mainGrid.getRowConstraints().add(new RowConstraints());
                 for (int col = 0; col < oldNumCols; col++) {
-                    mainGrid.add(new Rectangle(cellSize, cellSize, Color.rgb(16,16,16)), col, row);
+                    mainGrid.add(createGridCell(cellSize, row, col), col, row);
                 }
             }
         }
@@ -85,14 +97,14 @@ public class GridController {
         if (newNumCols < oldNumCols){
             for (int col = oldNumCols-1; col >= newNumCols; col--) {
                 int finalCol = col;
+                mainGrid.getColumnConstraints().remove(finalCol);
                 mainGrid.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == finalCol);
-                mainGrid.getRowConstraints().remove(finalCol);
             }
         } else {
             for (int col = oldNumCols; col < newNumCols; col++) {
                 mainGrid.getColumnConstraints().add(new ColumnConstraints());
                 for (int row = 0; row < newNumRows; row++) {
-                    mainGrid.add(new Rectangle(cellSize, cellSize, Color.rgb(16,16,16)), col, row);
+                    mainGrid.add(createGridCell(cellSize, row, col), col, row);
                 }
             }
         }
@@ -147,9 +159,23 @@ public class GridController {
         }
     }
 
-    private void cleanSolution(){
+    public void cleanSolution(){
         javafx.collections.transformation.FilteredList<javafx.scene.Node> nodesToRemove = mainGrid.getChildren().filtered(node -> node instanceof ImageView);
-        System.out.println(nodesToRemove);
         mainGrid.getChildren().removeAll(nodesToRemove);
     }
+
+    private Rectangle createGridCell(int size, int i, int j){
+        Rectangle r = new Rectangle(size, size, Color.rgb(16,16,16));
+        r.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
+            if (Util.getModifyVisible()){
+                ArrayList<ArrayList<Integer>> newRegion = GridInput.getRegions();
+                newRegion.get(i).set(j, Util.getSelectedColor());
+                GridInput.setRegion(newRegion);
+                renderGrid(GridInput.getRegions());
+            }
+        });
+
+        return r;
+    }
+
 }

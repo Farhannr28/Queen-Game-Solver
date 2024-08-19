@@ -55,7 +55,7 @@ public class RegionProcessor {
     }
 
     public static boolean validateRegion(int numColors){
-        return regionCount == numColors;
+        return regionCount == numColors - 1;
     }
 
     public static ArrayList<ArrayList<Cell>> getRegionPaths(){
