@@ -1,5 +1,8 @@
 <h1 align="center">♛♕ Queen Game Solver ♕♛</h1>
+
 Linkedin's Queen Game Solver as my submission for Computational Engineering Laboratory Assistant Selection. Implemented using Java language and utilizing JavaFX library for a rich graphical user interface (GUI).
+
+<br>
 
 <div align="center">
   <img src="img/Top.png"/> <br />
@@ -48,7 +51,7 @@ Follow these steps to set up the project locally:
 The following are the steps to solve a Queen's game puzzle. Once the application is opened, this is what the GUI looks like.
 
 <div align="center">
-  <img src="img/main.png"/> <br />
+  <img src="img/Main.png"/> <br />
 </div>
 
 1. **Create a .txt input file:**
@@ -81,7 +84,7 @@ The following are the steps to solve a Queen's game puzzle. Once the application
    Click the *Select File* button to open File Selector window. If the input is valid, your grid will be displayed as follow
 
    <div align="center">
-     <img src="img/confirmation.png"/> <br />
+     <img src="img/Grid.png"/> <br />
    </div>
 
 3. **Select your piece:**
@@ -93,32 +96,37 @@ The following are the steps to solve a Queen's game puzzle. Once the application
    - Bishop
    - Knight
 
+   <div align="center">
+     <img src="img/Piece.png"/> <br />
+   </div>
+
 4. **Select your Algorithm:**
 
    In the toggle button choose an algorithm to solve the puzzle. For now only Backtracking Depth First Search is implemented, altough a Genetic Algorithm might be added in the future.
 
 5. **(Optional) Modify the grid:**
 
-  You can modify the puzzle grid to your liking by first clicking the *Modify* button. A new section will pop up where you can:
-  - Increase/Decrease the number of rows and column (Maximum of 15x15).
-  - Add a new color for a region.
-  - Change the color of a grid square by picking a color on the color panel then click any square to change it.
+    You can modify the puzzle grid to your liking by first clicking the *Modify* button. A new section will pop up where you can:
+    - Increase/Decrease the number of rows and column (Maximum of 15x15).
+    - Add a new color for a region.
+    - Change the color of a grid square by picking a color on the color panel then click any square to change it.
 
-  Make sure that the grid is valid after modification, the program will report if otherwise.
-   <div align="center">
-     <img src="img/result.png"/> <br />
-   </div>
+    Make sure that the grid is valid after modification, the program will report if otherwise.
+     <div align="center">
+       <img src="img/Modify.png"/> <br />
+     </div>
 
-6. **Start Solving:**
-  Click the *Solve* button to initiate your choosen Algorithm
-
-7. **See the solution:**
-
-   The solution will be displayed on the grid. Your chess pieces are located on where they must be to solve the puzzle. If there's no possible configuration, the app will report.
-
-   <div align="center">
-     <img src="img/result.png"/> <br />
-   </div>
+  6. **Start Solving:**
+     
+     Click the *Solve* button to initiate your choosen Algorithm
+  
+  7. **See the solution:**
+  
+     The solution will be displayed on the grid. Your chess pieces are located on where they must be to solve the puzzle. If there's no possible configuration, the app will report.
+  
+     <div align="center">
+       <img src="img/Solution.png"/> <br />
+     </div>
 
 <br>
 
