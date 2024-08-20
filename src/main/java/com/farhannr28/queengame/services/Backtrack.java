@@ -27,14 +27,14 @@ public class Backtrack {
         } else if (piece.equals("KNIGHT")){
             backtrackKnight(gi);
         } else {
-            if (gi.getRow() < gi.getNumOfColors() || gi.getCol() < gi.getNumOfColors()){
-                solutionExist = false;
-            } else {
+            if (gi.getNumOfColors()-1 <= gi.getRow() && gi.getNumOfColors()-1 <= gi.getCol()){
                 backtrackRegion(gi, piece);
+            } else {
+                solutionExist = false;
             }
         }
 
-        if (solution.isEmpty() || solution.size() != gi.getNumOfColors()-1){
+        if (solution.isEmpty()){
             solutionExist = false;
         }
     }
@@ -145,14 +145,16 @@ public class Backtrack {
         int region = 1;
         int index = -1;
         boolean found = false;
-        while (region != -1){
+        while (region != 0){
             index++;
             while (index < RegionProcessor.getRegionPaths().get(region).size() && !found){
                 c = RegionProcessor.getRegionPaths().get(region).get(index);
                 row = c.getRow();
                 col = c.getCol();
                 if (pv.validateLinear(col, true) && pv.validateLinear(row, false) && pv.validateNonLinear(row, col)){
-                    pv.setNeighbor(col);
+                    if (piece.equals("NEIGHBORQUEEN")){
+                        pv.setNeighbor(row, col, true);
+                    }
                     pv.setVertical(col, true);
                     pv.setHorizontal(row, true);
                     if (piece.equals("QUEEN")){
@@ -181,7 +183,9 @@ public class Backtrack {
                 col = c.getCol();
                 pv.setVertical(col, false);
                 pv.setHorizontal(row, false);
-                pv.setNeighbor(col);
+                if (piece.equals("NEIGHBORQUEEN")){
+                    pv.setNeighbor(row, col, false);
+                }
                 if (piece.equals("QUEEN")){
                     pv.setDiagonal(row, col, false);
                 }
@@ -196,7 +200,7 @@ public class Backtrack {
         int region = 1;
         int index = -1;
         boolean found = false;
-        while (region != -1){
+        while (region != 0){
             index++;
             while (index < RegionProcessor.getRegionPaths().get(region).size() && !found){
                 c = RegionProcessor.getRegionPaths().get(region).get(index);
@@ -237,7 +241,7 @@ public class Backtrack {
         int region = 1;
         int index = -1;
         boolean found = false;
-        while (region != -1){
+        while (region != 0){
             index++;
             while (index < RegionProcessor.getRegionPaths().get(region).size() && !found){
                 c = RegionProcessor.getRegionPaths().get(region).get(index);

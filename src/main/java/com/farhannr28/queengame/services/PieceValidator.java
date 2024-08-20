@@ -11,16 +11,16 @@ public class PieceValidator {
     private boolean[] horizontal;
     private boolean[] extraParameters; //[L, Diagonal, Neighbor, +]
     private Cell[] knightMoves;
-    private int neighbor;
+    private boolean[][] neighbor;
 
     public PieceValidator(String piece, int row, int col, int numRegions){
         filledRegions = new boolean[numRegions];
-        neighbor = 0;
         switch (piece){
             case "NEIGHBORQUEEN":
                 extraParameters = new boolean[]{false, false, true, true};
                 vertical = new boolean[col];
                 horizontal = new boolean[row];
+                neighbor = new boolean[row][col];
                 break;
             case "QUEEN":
                 extraParameters = new boolean[]{false, true, false, true};
@@ -56,6 +56,9 @@ public class PieceValidator {
         } else if (extraParameters[0]){
             ret = !LArea[r][c];
         }
+        if (extraParameters[2]){
+            ret = ret && !neighbor[r][c];
+        }
         return ret;
     }
 
@@ -72,9 +75,6 @@ public class PieceValidator {
                 ret = !horizontal[x];
             }
         }
-        if (extraParameters[2]){
-            ret = ret && (x != neighbor-1) && (x != neighbor+1);
-        }
         return ret;
     }
 
@@ -82,8 +82,19 @@ public class PieceValidator {
         this.filledRegions[r] = b;
     }
 
-    public void setNeighbor(int x){
-        this.neighbor = x;
+    public void setNeighbor(int r, int c, boolean b){
+        if (r > 0 && c < this.neighbor[0].length-1){
+            this.neighbor[r-1][c+1] = b;
+        }
+        if (c > 0 && r < this.neighbor.length-1){
+            this.neighbor[r+1][c-1] = b;
+        }
+        if (c < this.neighbor[0].length-1 && r < this.neighbor.length-1){
+            this.neighbor[r+1][c+1] = b;
+        }
+        if (c > 0 && r > 0){
+            this.neighbor[r-1][c-1] = b;
+        }
     }
 
     public void setVertical(int x, boolean b){
@@ -109,6 +120,10 @@ public class PieceValidator {
 
     public void debug(){
         for(boolean b : filledRegions){
+            System.out.print(b + " ");
+        }
+        System.out.println(" ");
+        for(boolean b : horizontal){
             System.out.print(b + " ");
         }
         System.out.println(" ");
